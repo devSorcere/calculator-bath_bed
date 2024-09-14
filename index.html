@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+
+    .calculator {
+      width: 300px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+aping UI interface
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .row span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button {
+      background-color: #f56a4d;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .number-input {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    .number-input button {
+      background-color: #ddd;
+      color: black;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .price-display {
+      font-size: 28px;
+      color: #f56a4d;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .active-btn {
+      background-color: #f56a4d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="row">
+      <button class="active-btn" id="apartmentBtn">Apartment</button>
+      <button id="houseBtn">House</button>
+    </div>
+
+    <div class="row">
+      <span>Bedrooms</span>
+      <div class="number-input">
+        <button id="decreaseBed">-</button>
+        <span id="bedroomCount">1</span>
+        <button id="increaseBed">+</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <span>Bathrooms</span>
+      <div class="number-input">
+        <button id="decreaseBath">-</button>
+        <span id="bathroomCount">1</span>
+        <button id="increaseBath">+</button>
+      </div>
+    </div>
+
+    <div class="price-display">$<span id="price">100</span></div>
+  </div>
+
+  <script>
+    const prices = {
+      1: { 1: 100 },
+      2: { 1: 110, 2: 130 },
+      3: { 1: 120, 2: 130, 3: 150 },
+      4: { 2: 140, 3: 160, 4: 180, 5: 200 },
+      5: { 2: 140, 3: 160, 4: 180, 5: 200, 6: 200, 7: 200 }
+    };
+
+    let bedrooms = 1;
+    let bathrooms = 1;
+
+    const bedroomCount = document.getElementById('bedroomCount');
+    const bathroomCount = document.getElementById('bathroomCount');
+    const priceDisplay = document.getElementById('price');
+
+    function updatePrice() {
+      const currentPrice = prices[bedrooms][bathrooms];
+      priceDisplay.textContent = currentPrice;
+    }
+
+    document.getElementById('increaseBed').addEventListener('click', () => {
+      if (bedrooms < 5) {
+        bedrooms++;
+        bedroomCount.textContent = bedrooms;
+        if (bathrooms > Object.keys(prices[bedrooms]).length) {
+          bathrooms = Object.keys(prices[bedrooms]).length;
+          bathroomCount.textContent = bathrooms;
+        }
+        updatePrice();
+      }
+    });
+
+    document.getElementById('decreaseBed').addEventListener('click', () => {
+      if (bedrooms > 1) {
+        bedrooms--;
+        bedroomCount.textContent = bedrooms;
+        if (bathrooms > Object.keys(prices[bedrooms]).length) {
+          bathrooms = Object.keys(prices[bedrooms]).length;
+          bathroomCount.textContent = bathrooms;
+        }
+        updatePrice();
+      }
+    });
+
+    document.getElementById('increaseBath').addEventListener('click', () => {
+      if (bathrooms < Object.keys(prices[bedrooms]).length) {
+        bathrooms++;
+        bathroomCount.textContent = bathrooms;
+        updatePrice();
+      }
+    });
+
+    document.getElementById('decreaseBath').addEventListener('click', () => {
+      if (bathrooms > 1) {
+        bathrooms--;
+        bathroomCount.textContent = bathrooms;
+        updatePrice();
+      }
+    });
+  </script>
+
+</body>
+</html>
